@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Language Learning Experiment: Day 1</title>
+        <script type="text/javascript" src="lib/vendors/jspsych-6.0.5/jspsych.js"></script>
+        <script type="text/javascript" src="lib/vendors/jspsych-6.0.5/plugins/jspsych-fullscreen.js"></script>
+        <script type="text/javascript" src="lib/vendors/jspsych-6.0.5/plugins/jspsych-audio-keyboard-response.js"></script>
+        <script type="text/javascript" src="lib/vendors/jspsych-6.0.5/plugins/jspsych-audio-button-response.js"></script>
+        <script type="text/javascript" src="lib/vendors/jspsych-6.0.5/plugins/jspsych-html-keyboard-response.js"></script>
+        <script type="text/javascript" src="lib/vendors/jspsych-6.0.5/plugins/jspsych-html-button-response.js"></script>
+        <script type="text/javascript" src="lib/vendors/jspsych-6.0.5/plugins/jspsych-image-keyboard-response.js"></script>
+        <script type="text/javascript" src="lib/vendors/jspsych-6.0.5/plugins/jspsych-video.js"></script>
+        <script type="text/javascript" src="lib/vendors/jspsych-6.0.5/plugins/jspsych-survey-text.js"></script>
+        <script type="text/javascript" src="lib/vendors/jspsych-6.0.5/plugins/jspsych-survey-likert.js"></script>
+        <script type="text/javascript" src="lib/vendors/jspsych-6.0.5/plugins/jspsych-survey-multi-choice.js"></script>
+<!--        <script type="text/javascript" src="lib/vendors/jspsych-6.0.5/plugins/jspsych-survey-multi-select-consent.js"></script> -->
+        <script type="text/javascript"  src="lib/vendors/lib/vendors/jquery-2.2.0.min.js"></script>
+        <script type="text/javascript"  src="lib/vendors/lib/jspsych-pavlovia-3.0.0.js"></script>
+        <link   rel="stylesheet" 
+                href="lib/vendors/jspsych-6.0.5/css/jspsych.css" type="text/css"></link>
+        <link   rel="stylesheet"
+                href="fonts/Serif/cmun-serif.css"></link> 
+        <link   rel="stylesheet"
+                href="https://fonts.googleapis.com/css?family=Raleway"> </link>
+        <link   rel="stylesheet"
+                href="https://fonts.googleapis.com/css?family=Kanit&subset=thai,latin" 
+                type='text/css'>
+        
+        <style>
+            html, body {
+                font-family:    'Raleway', sans-serif, Helvetica, Arial;
+                font-size:      15px;
+                height:         100%;
+            }
+            
+        </style>
+    </head>
+    
+    <body> </body>
+    
+    <script>  
+
+
+    //////////survey-multi-select-consent = modified from multi-select
+    //////////subjects must select three options on consent page to proceed
+
+        
+        
+    
+    //////////* create timeline *//////////
+    var timeline = [];
+        
+    
+    /* init connection with pavlovia.org */
+    var pavlovia_init = {
+        type: "pavlovia",
+        command: "init"
+    };
+    timeline.push(pavlovia_init);
+    
+    
+    
+    //////////* create variables for media files                    *//////////
+    //////////* use in conjunction with preload_* in jsPsych.init   *//////////
+    //////////* this preloading makes stimuli work in timeline      *//////////
+    
+    var images =    [  
+                    'Noun_train/Nouns_img/harter.png', 
+                    'Noun_train/Nouns_img/toak.png', 
+                    'Noun_train/Nouns_img/jark.png',           
+                    'Noun_train/Nouns_img/fursar.png',
+                    'Noun_train/Nouns_img/dola.png',
+                    'Noun_train/Nouns_img/dass.png',
+                    //pilot testing: sentences training
+                    'Sent_train/harter_dola_katon_comple.png',
+                    'Sent_train/harter_dola_katon_conti.png',
+                    'Sent_train/toak_dola_lin_comple.png',
+                    'Sent_train/toak_dola_lin_conti.png',
+                    'Sent_train/jark_dass_katon_comple.png', 
+                    'Sent_train/jark_dass_katon_conti.png', 
+                    'Sent_train/fursar_dass_lin_comple.png',
+                    'Sent_train/fursar_dass_lin_conti.png',
+                    ];
+        
+    
+
+
+
+    var audio = [   'Noun_train/Nouns_sound/harter_35ms.wav', 
+                    'Noun_train/Nouns_sound/toak_35ms.wav', 
+                    'Noun_train/Nouns_sound/jark_35ms.wav',    
+                    'Noun_train/Nouns_sound/fursar_35ms.wav',
+                    'Noun_train/Nouns_sound/dass_35ms.wav',
+                    'Noun_train/Nouns_sound/dola_35ms.wav',
+                    //pilot testing: sentence training
+                    'Audio-Eng-like-sent/harter_dola_katon-an.wav',
+                    'Audio-Eng-like-sent/harter_dola_katon-et.wav',
+                    'Audio-Eng-like-sent/toak_dola_lin-an.wav',
+                    'Audio-Eng-like-sent/toak_dola_lin-et.wav',
+                    'Audio-Eng-like-sent/jark_dass_katon-an.wav',
+                    'Audio-Eng-like-sent/jark_dass_katon-et.wav',
+                    'Audio-Eng-like-sent/fursar_dass_lin-an.wav',
+                    'Audio-Eng-like-sent/fursar_dass_lin-et.wav'
+                ];
+    
+    
+    
+    
+    
+    
+    //////////* begin the experiment with a fullscreen *//////////        
+//    var fullscreen_trial = {
+//        type:               'fullscreen',
+//        fullscreen_mode:    true,
+//        message:            
+//        "<h2> Language Learning Experiment </h2>" +
+//        "<p style = 'font-size: 18px'>This experiment is in full-screen mode. Click continue to begin.</p> <br> <br> <br>",
+//        button_label:       "Continue"
+//    }
+//    timeline.push(fullscreen_trial);
+
+
+
+
+    //////////* define welcome message trial *//////////
+    var welcome = {
+        type:     'html-button-response',
+        choices:  ['English', 'ไทย'],
+        stimulus:
+        "<h2> Language Learning Experiment </h2>" +
+        "<div style = 'font-size: 18px;'>" +
+        "<p> Welcome to the experiment! </p>" +
+        "<p> Select the language to proceed. </p>" +
+        "<p> ------------------------------------- </p>" +
+        "<p> ยินดีต้อนรับสู่วันแรกของการทดลอง </p>" +
+        "<p> กรุณากดเลือกภาษาเพื่อเริ่มต้น </p>" +
+        "</div>",
+        //use data: {} to generate a name for this trial
+        data:   {trial: 'language_node'}
+    }
+    timeline.push(welcome);
+    
+    
+    
+    
+    //////////* English consent form *//////////   
+//    var consent_Engform = {
+//        type:           'survey-multi-select-consent',
+//        button_label:   'Next',
+//        preamble: 
+//        "<h3> Consent Form </h3>" +
+//        "<div style = 'text-align:left; font-size: 15px'>" +
+//        "<p> You are invited to participate in a research study on language learning, which is conducted at the Department of Linguistics, Georgetown University. In this experiment, you will be asked to watch short videos and listen to sentences that describe images. </p>" +
+//    
+//        "<p> Participation in this study is entirely <b><i>voluntary</i></b> at all times. You can choose not to participate at all or to leave the study at any time. Regardless of your decision, there will be no effect on your relationship with the researchers or any other consequences. If you have any questions regarding this research project in general, please contact the principal investigator, Sakol Suethanapornkul (ss3302@georgetown.edu), or his faculty advisor, Dr. Lourdes Ortega (Lourdes.Ortega@georgetown.edu). If you have any questions about your rights as a research participant, please contact the Georgetown University IRB at (202)-687-1506 or irboard@georgetown.edu.</p>" +
+//        "</div>",
+//        questions: 
+//        [ {
+//            prompt: "Please confirm that you have met <b>all</b> of the following criteria and are willing to take part in this project:",
+//            options: ["I am at least 18 years old", "I am an undergraduate student at Georgetown University", "I grant my permission for the information to be used in the research"] 
+//        }
+//        ], 
+//        required: true,
+//        data: {trial: 'consent_Eng'}
+//    }
+//    
+//    var if_Eng = {
+//        timeline:               [consent_Engform],
+//        conditional_function:   function(){
+//        // get the data from specific trial using filter({name: ' ' }),
+//        // and check which key was pressed; 0 here is 1st answer = English
+//        var data = 
+//        jsPsych.data.get().filter({trial: 'language_node'}).values()[0].button_pressed;
+//        if(data == '0'){
+//            return true;
+//        } else {
+//            return false;
+//            }
+//        }
+//    }
+//    timeline.push(if_Eng);
+//    
+//    
+//        
+//    
+//    //////////* Thai consent form *////////// 
+//    var consent_Thaiform = {
+//        type:           'survey-multi-select-consent',
+//        button_label:   'Next',
+//        preamble: 
+//        "<h3> เอกสารยินยอมเข้าร่วมการวิจัย </h3>" +
+//        "<div style = 'text-align:left; font-size: 15px'>" +
+//        "<p> ขอขอบคุณที่สละเวลาเข้าร่วมการทดลอง โปรดอ่านเอกสารยินยอมเข้าร่วมการวิจัยนี้อย่างละเอียด</p>" +
+//        "<p> การทดลองนี้เป็นส่วนหนึ่งของภาควิชาภาษาศาสตร์ มหาวิทยาลัยจอร์จทาวน์ วอชิงตัน ดี.ซี. ประเทศสหรัฐอเมริกา ผู้เรียนจะได้เรียนภาษาผ่านวีดีโอและฟังประโยคประกอบภาพ </p>" +
+//        
+//        "<p> การทดลองนี้เป็นไปโดย<b><u>ความสมัครใจ</u></b> ผู้เรียนสามารถเลือกเข้าร่วมหรือถอนตัวจากการทดลองได้ตลอดเวลา การตัดสินใจดังกล่าวจะไม่ส่งผลกระทบใดๆ ทั้งสิ้น ผู้เรียนสามารถติดต่อผู้วิจัย (สกล ซื่อธนาพรกุล) ผ่านทางอีเมล์ ss3302@georgetown.edu หรือติดต่อที่ปรึกษาของผู้วิจัย Dr. Lourdes Ortega ผ่านทางอีเมล์ Lourdes.Ortega@georgetown.edu หากผู้เรียนมีคำถามเกี่ยวกับสิทธิ์ของท่าน ท่านสามารถติดต่อ Institute Review Board ทางอีเมล์ที่ irboard@georgetown.edu หรือที่เบอร์โทรศัพท์  +1 (202)-687-1506 </p>" +
+//        "</div>",
+//        questions: 
+//        [ {
+//            prompt: "โปรดยืนยันด้วยการเลือกคำตอบทุกข้อด่านล่างว่า ผู้เรียน:",
+//            options: ["มีอายุ 18 ปีขึ้นไป", "เป็นนิสิต หรือนักศึกษาระดับปริญญาตรี",
+//             "อนุญาตให้ใช้ข้อมูลที่ได้รับเพื่อการวิจัย"]
+//        }
+//        ], 
+//        required: true,
+//        data: {trial: 'consent_Thai'}
+//    }
+//
+//    var if_Thai = {
+//        timeline:               [consent_Thaiform],
+//        conditional_function:   function(){
+//        // data == '1' here 1 is Thai from the welcome trial
+//        var data = 
+//        jsPsych.data.get().filter({trial: 'language_node'}).values()[0].button_pressed;
+//        if(data == '1'){
+//            return true;
+//        } else {
+//            return false;
+//            }
+//        }
+//    }
+//    timeline.push(if_Thai);    
+
+
+        
+    //////////* Instructions: Scene setting for Experiment *////////// 
+    var Exp_instructions = {
+        type:       'html-keyboard-response',
+        stimulus: 
+        "<h3> Instructions </h3>" +
+        "<div style = 'text-align:left; font-size: 15px'>" +
+        "<p> Thank you again for participating in this experiment! </p>" +
+        "<p> The language you're about to learn was recently discovered by a team of researchers in Sweden and is spoken by only about 300 people. Research is ongoing, and scientists need your help in understanding this language in order to preserve it. Because this is an introduction to the language, you will learn only a small set of vocabulary and simple sentences. Don’t worry, researchers want you to learn the language well! </p>" +
+        "<p> For this experiment, you will learn sentences that describe simple actions. These actions are in two stages, and each sentence you will hear describes the second stage. </p>" +  
+        "<p> You will get to learn some words in the language before moving on to sentences. This language may be challenging, but with effort and time, it is certainly not impossible! Make sure to try your best. </p> <br/>" +
+        "<p> If you are ready to begin, press <b>SPACEBAR</b> to proceed. </p>",
+        choices:    ['space'],
+        data:       {trial: 'Exp_instr_Eng'}
+    }
+    timeline.push(Exp_instructions);
+    
+    
+    
+    //* Instructions in Thai: only presented to Thai participants *//
+    var Exp_instructions_Thai = {
+        type:       'html-keyboard-response',
+        stimulus: 
+        "<h3> คำอธิบาย </h3>" +
+        "<div style = 'text-align:left; font-size: 15px'>" +
+        "<p> ขอบคุณที่สละเวลาเข้าร่วมการทดลองเพื่อเรียนภาษาที่เพิ่งถูกค้นพบ! </p>" +
+        "<p> ทีมนักวิจัยจากประเทศสวีเดนได้ค้นพบภาษานี้ และประเมินว่า ภาษานี้มีผู้ใช้อยู่แค่ประมาณ 300 คน นักวิจัยต้องการความช่วยเหลือจากคุณให้เรียนภาษาดังกล่าว เพื่อการอนุรักษ์ ระหว่างการทดลอง ผู้เรียนจะได้เรียนคำศัพท์และประโยคพื้นฐานที่บรรยายเหตุการณ์หรือกิจกรรมทั่วไป สำหรับแต่ละประโยค ผู้เรียนจะได้ฟังประโยคพร้อมภาพประกอบประโยค </p>" +
+        "<p> คุณจะได้เรียนคำศัพท์ก่อนการเรียนประโยค ผู้เรียนอาจจะรู้สึกว่าภาษานี้ยากในช่วงเริ่มต้น  แต่ขอให้ตั้งใจและพยายามอย่างเต็มที่ แล้วคุณจะสามารถเข้าใจภาษานี้ได้! </p>" +
+        "<p> ถ้าคุณพร้อมจะเริ่มการเรียน กด <b>SPACEBAR</b> เพือไปยังคำศัพท์ </p>",
+        choices:    ['space'],
+        data:       {trial: 'Exp_instr_Thai'}
+    }
+    var ExpInstruct_Thai_show = {
+        timeline:   [Exp_instructions_Thai],
+        conditional_function:   function(data){
+        var data = 
+        jsPsych.data.get().filter({trial: 'language_node'}).values()[0].button_pressed;
+        if(data == '1'){
+            return true;
+        } else {
+            return false;
+            }
+        }
+    }
+    timeline.push(ExpInstruct_Thai_show);
+
+
+
+
+    /////////////////////////////* Noun Training */////////////////////////////
+    
+    //* Noun exposure instruction
+    var Nouns_instruction = {
+        type:       'html-keyboard-response',
+        stimulus: 
+        "<h3> Instructions </h3>" +
+        "<div style = 'text-align:left; font-size: 15px'>" +
+        "<p> We will begin with some words in this language. You'll see images and, for each one, hear a corresponding word. During the presentation, items will continue automatically. <b>You don't need to press any key</b>. This will help you focus on learning new words! At this point in time, you may find some words jarring simply because of the way they are pronounced. Don't worry about that! </p>" +
+        "<p> If you are ready to begin, press <b>SPACEBAR</b> to proceed. </p>",
+        choices:    ['space'],
+        data:       {trial: 'Noun_instr_Eng'}
+    }
+    timeline.push(Nouns_instruction);
+    
+    
+    
+    //* Instructions in Thai: only presented to Thai participants *//
+    var Nouns_instruction_Thai = {
+        type:       'html-keyboard-response',
+        stimulus: 
+        "<h3> คำอธิบาย </h3>" +
+        "<div style = 'text-align:left; font-size: 15px'>" +
+        "<p> เราจะเริ่มต้นที่คำศัพท์กันก่อน ผู้เรียนจะได้ดูรูปและคำศัพท์ประกอบรูปภาพ เนื้อหากิจกรรมส่วนนี้จะเคลื่อนไปโดยอัตโนมัติ เพื่อให้ผู้เรียนตั้งใจเรียนได้อย่างเต็มที่ โดยไม่ต้องกังวลกับการกดปุ่มใดๆ บน keyboard </p>" +
+        "<p> ถ้าผู้เรียนพร้อมแล้ว กด <b>SPACEBAR</b> เพื่อเริ่มต้นกิจกรรมคำศัพท์ </p>",
+        choices:    ['space'],
+        data:       {trial: 'Noun_instr_Thai'}
+    }
+    var NounInstruct_Thai_show = {
+        timeline:   [Nouns_instruction_Thai],
+        conditional_function:   function(data){
+        var data = 
+        jsPsych.data.get().filter({trial: 'language_node'}).values()[0].button_pressed;
+        if(data == '1'){
+            return true;
+        } else {
+            return false;
+            }
+        }
+    }
+    timeline.push(NounInstruct_Thai_show);
+
+
+    
+    
+    //////////* Noun Exposure *//////////
+    
+    //* Define variables for sentence_pilot timeline_variables  
+    var Noun_pilot = [
+            {   images: 'Noun_train/Nouns_img/harter.png', 
+                audio:  'Noun_train/Nouns_sound/harter_35ms.wav'    },
+            {   images: 'Noun_train/Nouns_img/toak.png', 
+                audio:  'Noun_train/Nouns_sound/toak_35ms.wav'      },
+            {   images: 'Noun_train/Nouns_img/jark.png', 
+                audio:  'Noun_train/Nouns_sound/jark_35ms.wav'      },
+            {   images: 'Noun_train/Nouns_img/fursar.png', 
+                audio:  'Noun_train/Nouns_sound/fursar_35ms.wav'    },
+            {   images: 'Noun_train/Nouns_img/dola.png', 
+                audio:  'Noun_train/Nouns_sound/dola_35ms.wav'      },
+            {   images: 'Noun_train/Nouns_img/dass.png', 
+                audio:  'Noun_train/Nouns_sound/dass_35ms.wav'      }     
+    ];
+       
+        
+    
+    
+    //* Noun exposure session    
+    var Nouns_exposure = {
+        timeline: [
+            {
+                type:               'image-keyboard-response',
+                stimulus:           jsPsych.timelineVariable('images'),
+                choices:            jsPsych.NO_KEYS,  
+                stimulus_duration:  1000,
+                trial_duration:     1000
+            },
+            
+            {
+                type:               'audio-keyboard-response',
+                stimulus:           jsPsych.timelineVariable('audio'),
+                prompt:             function() {return "<img src =" +jsPsych.timelineVariable('images', true)+ " width: 50px; height: 50px>";},
+                trial_duration:     2000,
+                choices:            jsPsych.NO_KEYS,
+            }
+        ],
+        
+        timeline_variables:         Noun_pilot,
+        
+        sample: {
+            type: 'custom',
+            fn: function(t) {
+                    var repeatedSet = jsPsych.randomization.repeat(t, 2);
+                    var shuffled = jsPsych.randomization.shuffleNoRepeats(repeatedSet);
+                return shuffled;
+            }
+        }
+    }
+    timeline.push(Nouns_exposure);
+
+        
+        
+        
+        
+    //////////* Noun Testing *//////////
+    
+    //* Noun testing instruction
+    var Nouns_test_instruction = {
+        type:       'html-keyboard-response',
+        stimulus: 
+        "<h3> Instructions </h3>" +
+        "<div style = 'text-align:left; font-size: 15px'>" +
+        "<p> Now let's see if you can remember what these words mean! Again, you will see images and, for each one, hear a corresponding word. But this time, you'll have to translate those words into English. What do you think each word means in English? Type your answer in a box provided. Try your best! </p>" +
+        "<p> If you are ready to begin, press <b>SPACEBAR</b> to proceed. </p>",
+        choices:    ['space'],
+        data:       {trial: 'Noun_test_Eng'}
+    }
+    timeline.push(Nouns_test_instruction);
+    
+    
+    
+   
+    var Nouns_test_instruction_Thai = {
+        type:       'html-keyboard-response',
+        stimulus: 
+        "<h3> คำอธิบาย </h3>" +
+        "<div style = 'text-align:left; font-size: 15px'>" +
+        "<p> เรามาทดสอบกันว่าผู้เรียนจำคำศัพท์ที่เพิ่งผ่านไปได้มากน้อยแค่ไหน โปรดเลือกรูปภาพที่ตรงกับคำศัพท์ที่ผู้เรียนได้ยิน ผู้เรียนจะต้องตอบให้ถูกทุกข้อเพื่อจะไปยังส่วนต่อไปของการทดลอง พยายามให้เต็มที่! </p>" +
+        "<p> ถ้าพร้อมแล้ว กด <b>SPACEBAR</b> เพื่อเริ่มต้นแบบทดสอบคำศัพท์ </p>",
+        choices:    ['space'],
+        data:       {trial: 'Noun_test_Thai'}
+    }
+    var Nouns_test_instruction_Thai_show = {
+        timeline:   [Nouns_test_instruction_Thai],
+        conditional_function:   function(data){
+        var data = 
+        jsPsych.data.get().filter({trial: 'language_node'}).values()[0].button_pressed;
+        if(data == '1'){
+            return true;
+        } else {
+            return false;
+            }
+        }
+    }
+    timeline.push(Nouns_test_instruction_Thai_show);
+
+
+
+
+    //* Noun testing session
+    var Nouns_testing = {
+        timeline: [
+            {
+                type:               'image-keyboard-response',
+                stimulus:           jsPsych.timelineVariable('images'),
+                choices:            jsPsych.NO_KEYS,  
+                stimulus_duration:  2000,
+                trial_duration:     2000
+            },
+            
+            {
+                type:               'audio-keyboard-response',
+                stimulus:           jsPsych.timelineVariable('audio'),
+                prompt:             function() {return "<img src =" +jsPsych.timelineVariable('images', true)+ " width: 50px; height: 50px>";},
+                trial_duration:     2000,
+                choices:            jsPsych.NO_KEYS,
+            },
+            
+            {
+                type:               'survey-text',
+                preamble:           "<h4> What do you think the word means in English? </h4>",
+                questions:          [{prompt: "Answer:"}],
+            }
+        ],
+        
+        timeline_variables:         Noun_pilot,
+        
+        sample: {
+            type: 'custom',
+            fn: function(t) {
+                    var repeatedSet = jsPsych.randomization.repeat(t, 1);
+                    var shuffled = jsPsych.randomization.shuffleNoRepeats(repeatedSet);
+                return shuffled;
+            }
+        }
+    }
+    timeline.push(Nouns_testing);
+    
+        
+    
+     
+        
+        
+        
+        
+        
+        
+    /////////////////////////////* Sentence Training */////////////////////////////
+    
+    //* Sentence exposure instruction
+    var Sent_instruction = {
+        type:       'html-keyboard-response',
+        stimulus: 
+        "<h3> Instructions </h3>" +
+        "<div style = 'text-align:left; font-size: 15px'>" +
+        "<p> Now, let's get down to the sentences of this language. Remember, you will learn sentences that describe simple actions. These actions are in two stages, and each sentence you will hear describes the second stage of the action. During the presentation, items will continue automatically. <b>You don't need to press any key</b>. </p>" +
+        "<p> If you are ready to begin, press <b>SPACEBAR</b> to proceed. </p>",
+        choices:    ['space'],
+        data:       {trial: 'Sent_instr_Eng'}
+    }
+    timeline.push(Sent_instruction);
+    
+    
+    var Sent_instruction_Thai = {
+        type:       'html-keyboard-response',
+        stimulus: 
+        "<h3> Instructions </h3>" +
+        "<div style = 'text-align:left; font-size: 15px'>" +
+        "<p> ตอนนี้ก็ถึงช่วงการเรียนประโยคแล้ว ผู้เรียนจะได้ดูวีดีโอคลิป และฟังประโยคประกอบภาพในตอนท้ายของแต่ละวีดีโอ เนื้อหากิจกรรมส่วนนี้จะเคลื่อนไปโดยอัตโนมัติ ผู้เรียนไม่ต้องกังวลกับการกดปุ่มใดๆ บน keyboard </p>" +
+        "<p> ถ้าพร้อมแล้ว กด <b>SPACEBAR</b> เพื่อเริ่มต้นบทเรียน </p>",
+        choices:    ['space'],
+        data:       {trial: 'Sent_instr_Thai'}
+    }
+    var Sent_instruction_Thai_show = {
+        timeline:   [Sent_instruction_Thai],
+        conditional_function:   function(data){
+        var data = 
+        jsPsych.data.get().filter({trial: 'language_node'}).values()[0].button_pressed;
+        if(data == '1'){
+            return true;
+        } else {
+            return false;
+            }
+        }
+    }
+    timeline.push(Sent_instruction_Thai_show);   
+    
+    
+    
+    
+    //* Define variables for sentence_pilot timeline_variables   
+    var sentence_pilot = [
+        {   clips: '<video autoplay> <source src="Sent_train/videos/harter_dola_katon.mp4" type="video/mp4"> </video>',
+            still: 'Sent_train/harter_dola_katon_comple.png',
+            sents: 'Audio-Eng-like-sent/harter_dola_katon-an.wav'             
+        },
+            
+        {   clips: '<video autoplay> <source src="Sent_train/videos/harter_dola_katon.mp4" type="video/mp4"> </video>',
+            still: 'Sent_train/harter_dola_katon_conti.png',
+            sents: 'Audio-Eng-like-sent/harter_dola_katon-et.wav'       
+        },
+            
+        {   clips: '<video autoplay> <source src="Sent_train/videos/toak_dola_lin.mp4" type="video/mp4"> </video>', 
+            still: 'Sent_train/toak_dola_lin_comple.png',
+            sents: 'Audio-Eng-like-sent/toak_dola_lin-an.wav'               
+        },
+            
+        {   clips: '<video autoplay> <source src="Sent_train/videos/toak_dola_lin.mp4" type="video/mp4"> </video>',
+            still: 'Sent_train/toak_dola_lin_conti.png', 
+            sents: 'Audio-Eng-like-sent/toak_dola_lin-et.wav'
+        },   
+        
+        {   clips: '<video autoplay> <source src="Sent_train/videos/jark_dass_katon.mp4" type="video/mp4"> </video>',
+            still: 'Sent_train/jark_dass_katon_comple.png', 
+            sents: 'Audio-Eng-like-sent/jark_dass_katon-an.wav'  
+        },
+       
+        {   clips: '<video autoplay> <source src="Sent_train/videos/jark_dass_katon.mp4" type="video/mp4"> </video>',
+            still: 'Sent_train/jark_dass_katon_conti.png', 
+            sents: 'Audio-Eng-like-sent/jark_dass_katon-et.wav'
+        },
+        
+        {   clips: '<video autoplay> <source src="Sent_train/videos/fursar_dass_lin.mp4" type="video/mp4"> </video>',
+            still: 'Sent_train/fursar_dass_lin_comple.png', 
+            sents: 'Audio-Eng-like-sent/fursar_dass_lin-an.wav'
+        },
+        
+        {   clips: '<video autoplay> <source src="Sent_train/videos/fursar_dass_lin.mp4" type="video/mp4"> </video>',
+            still: 'Sent_train/fursar_dass_lin_conti.png', 
+            sents: 'Audio-Eng-like-sent/fursar_dass_lin-et.wav'
+        },
+    ];
+    
+    
+        
+    //* Sentence exposure
+    var Sent_exposure = {
+        timeline: [
+        
+            //blank stimulus, for jittered inter-stimulus interval [500-1500 ms] 
+            {
+                type:               'html-keyboard-response',
+                stimulus:           "<div style = 'font-size: 60px'> </div>",
+                choices:            jsPsych.NO_KEYS,
+                trial_duration:     function() {
+                    var x  = Math.floor(Math.random() * (1500 - 500)) + 500;
+                    return x;
+                    }
+            },
+            
+            //fixation cross, before each video and audio file
+            {
+                type:               'html-keyboard-response',
+                stimulus:           "<div style = 'font-size: 100px'>*</div>",
+                choices:            jsPsych.NO_KEYS,
+                trial_duration:     1000
+            },
+            
+            //5-second video
+            {
+                type:               'html-keyboard-response',
+                stimulus:           jsPsych.timelineVariable('clips'),
+                choices:            jsPsych.NO_KEYS,
+                trial_duration:     5200,
+            },
+
+            {
+                type:               'audio-keyboard-response',
+                stimulus:           jsPsych.timelineVariable('sents'),
+                prompt:             function() {return "<img src =" +jsPsych.timelineVariable('still', true)+ " width: 50px; height: 50px>";},
+                trial_duration:     3000,
+                choices:            jsPsych.NO_KEYS,
+            }
+            
+        ],
+        timeline_variables:         sentence_pilot,
+
+//        sample: {
+//            type: 'custom',
+//            fn: function(t) {
+//                    var shuffled = jsPsych.randomization.shuffleNoRepeats(t);
+//                return shuffled;
+//            }
+//        }
+    }
+    timeline.push(Sent_exposure);
+        
+        
+    
+        
+    //////////* Sentence Testing *//////////
+    
+    //* Sentence testing instruction
+    var Sentence_test_instruction = {
+        type:       'html-keyboard-response',
+        stimulus: 
+        "<h3> Instructions </h3>" +
+        "<div style = 'text-align:left; font-size: 15px'>" +
+        "<p> What do you think the sentences you just heard mean? Again, you will see simple actions, each one in two stages. Please translate each sentence that describes the second stage of the action into English. Type your answer in a box provided. Try your best! </p>" +
+        "<p> If you are ready to begin, press <b>SPACEBAR</b> to proceed. </p>",
+        choices:    ['space'],
+        data:       {trial: 'Noun_test_Eng'}
+    }
+    timeline.push(Sentence_test_instruction);
+    
+    
+    var Sentence_test_instruction_Thai = {
+        type:       'html-keyboard-response',
+        stimulus: 
+        "<h3> คำอธิบาย </h3>" +
+        "<div style = 'text-align:left; font-size: 15px'>" +
+        "<p> เรามาทดสอบกันว่าผู้เรียนจำคำศัพท์ที่เพิ่งผ่านไปได้มากน้อยแค่ไหน โปรดเลือกรูปภาพที่ตรงกับคำศัพท์ที่ผู้เรียนได้ยิน ผู้เรียนจะต้องตอบให้ถูกทุกข้อเพื่อจะไปยังส่วนต่อไปของการทดลอง พยายามให้เต็มที่! </p>" +
+        "<p> ถ้าพร้อมแล้ว กด <b>SPACEBAR</b> เพื่อเริ่มต้นแบบทดสอบคำศัพท์ </p>",
+        choices:    ['space'],
+        data:       {trial: 'Noun_test_Thai'}
+    }
+    var Sentence_test_instruction_Thai_show = {
+        timeline:   [Sentence_test_instruction_Thai],
+        conditional_function:   function(data){
+        var data = 
+        jsPsych.data.get().filter({trial: 'language_node'}).values()[0].button_pressed;
+        if(data == '1'){
+            return true;
+        } else {
+            return false;
+            }
+        }
+    }
+    timeline.push(Sentence_test_instruction_Thai_show);
+
+        
+        
+        
+    //* Sentence testing session
+    var Sent_testing = {
+        timeline: [
+        
+            //blank stimulus, for jittered inter-stimulus interval [500-1500 ms] 
+            {
+                type:               'html-keyboard-response',
+                stimulus:           "<div style = 'font-size: 60px'> </div>",
+                choices:            jsPsych.NO_KEYS,
+                trial_duration:     function() {
+                    var x  = Math.floor(Math.random() * (1500 - 500)) + 500;
+                    return x;
+                    }
+            },
+            
+            //fixation cross, before each video and audio file
+            {
+                type:               'html-keyboard-response',
+                stimulus:           "<div style = 'font-size: 100px'>*</div>",
+                choices:            jsPsych.NO_KEYS,
+                trial_duration:     1000
+            },
+            
+            //5-second video
+            {
+                type:               'html-keyboard-response',
+                stimulus:           jsPsych.timelineVariable('clips'),
+                choices:            jsPsych.NO_KEYS,
+                trial_duration:     5200,
+            },
+
+            {
+                type:               'audio-keyboard-response',
+                stimulus:           jsPsych.timelineVariable('sents'),
+                prompt:             function() {return "<img src =" +jsPsych.timelineVariable('still', true)+ " width: 50px; height: 50px>";},
+                trial_duration:     3000,
+                choices:            jsPsych.NO_KEYS,
+            },
+            
+            {
+                type:               'survey-text',
+                preamble:           "<h4> What do you think the sentence means in English? </h4>",
+                questions:          [{prompt: "Answer:"}],
+            }
+            
+        ],
+        timeline_variables:         sentence_pilot,
+
+//        sample: {
+//            type: 'custom',
+//            fn: function(t) {
+//                    var shuffled = jsPsych.randomization.shuffleNoRepeats(t);
+//                return shuffled;
+//            }
+//        }
+    }
+    timeline.push(Sent_testing);
+    
+    
+    
+    
+    /* finish connection with pavlovia.org */
+    var pavlovia_finish = {
+        type: "pavlovia",
+        command: "finish"
+	};
+    timeline.push(pavlovia_finish);
+    
+    
+    
+   jsPsych.init({
+      timeline: timeline,
+      use_webaudio: false,
+      preload_audio: audio,
+      preload_images: images,
+      show_preload_progress_bar: false,
+      show_progress_bar: true,
+      on_finish: function() {
+            //saveData('subject-'+code+'.csv', jsPsych.data.dataAsCSV());
+            //jsPsych.endExperiment('The experiment was ended. This is the end message.');
+            jsPsych.data.displayData();
+        }
+    });
+    </script>
+</html>
